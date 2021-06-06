@@ -9,10 +9,10 @@ const getData = async ({
   queryKey: any;
 }): Promise<ResponseData> => {
   const [, { type, query }]: [string, { type: string, query: string }] = queryKey;
-  const { data } = await axios.get(
+  const response = await axios.get(
     `https://rickandmortyapi.com/api/${type}/${query}`,
   );
-  return data;
+  return response.data;
 };
 
 export default function useReactQuery(type: string, query: string) {

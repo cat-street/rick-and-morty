@@ -6,7 +6,7 @@ import { ResponseData } from 'types';
 const getData = async ({ queryKey }: any): Promise<ResponseData> => {
   const [, { type, query }] = queryKey;
   const { data } = await axios.get(
-    `https://rickandmortyapi.com/api/${type}/?${query}`,
+    `https://rickandmortyapi.com/api/${type}/${query}`,
   );
   return data;
 };

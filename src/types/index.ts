@@ -50,3 +50,12 @@ export interface ResponseData {
   info: Info;
   results: Character[] | Location[] | Episode[];
 }
+
+export interface QueryParams {
+  [key: string]: string | number | null;
+  page: string | number | null;
+  name: string | null;
+  status: 'alive' | 'dead' | 'unknown' | null;
+  species: string | null;
+  gender: 'female' | 'male' | 'genderless' | 'unknown' | null;
+}

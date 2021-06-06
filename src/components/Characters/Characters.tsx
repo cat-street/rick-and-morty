@@ -1,4 +1,6 @@
-import { useLocation } from 'react-router-dom';
+import { useEffect } from 'react';
+import { useLocation, Link } from 'react-router-dom';
+
 import {
   Card,
   CardActionArea,
@@ -9,49 +11,113 @@ import {
   makeStyles,
   Typography,
 } from '@material-ui/core';
+import Pagination from '@material-ui/lab/Pagination';
+import PaginationItem from '@material-ui/lab/PaginationItem';
 
 import useReactQuery from 'hooks/useReactQuery';
-import { Character } from 'types';
+import { Character, QueryParams } from 'types';
+import Loader from 'components/Loader/Loader';
 
 const useStyles = makeStyles({
+  main: {
+    padding: '30px 0',
+  },
   card__image: {
     height: '300px',
   },
+  pagination: {
+    paddingTop: '20px',
+    '& ul': {
+      justifyContent: 'center',
+    },
+  },
 });
+
+const querySettings = ['page', 'name', 'status', 'species', 'gender'];
+
+function buildQueryString(queryParams: QueryParams) {
+  const queryArr: string[] = [];
+  querySettings.forEach((el) => {
+    if (queryParams[el]) {
+      queryArr.push(`${el}=${queryParams[el]}`);
+    }
+  });
+  return queryArr.length > 0 ? `?${queryArr.join('&')}` : '';
+}
+
+function buildPaginationString(page: number, queryParams: QueryParams) {
+  return page === 1
+    ? buildQueryString({ ...queryParams, page: null })
+    : buildQueryString({ ...queryParams, page });
+}
 
 const Characters = () => {
   const classes = useStyles();
-  const location = useLocation();
-  const query = new URLSearchParams(location.search);
-  const page = query.get('page') || '1';
+  const { pathname, search } = useLocation();
 
-  const { isLoading, data } = useReactQuery('character', `page=${page}`);
+  const query = new URLSearchParams(search);
+  const queryParams: QueryParams = {
+    page: null,
+    name: null,
+    status: null,
+    species: null,
+    gender: null,
+  };
+  querySettings.forEach((el) => {
+    queryParams[el] = query.get(el);
+  });
+  const queryString = buildQueryString(queryParams);
+
+  const { isLoading, data } = useReactQuery('character', queryString);
   const characters = data?.results as Character[];
 
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [pathname]);
+
   return (
-    <main>
+    <main className={classes.main}>
       <Container>
-        <Grid container spacing={2}>
-          {characters &&
-            characters.map((el) => (
-              <Grid item xs={12} sm={4} lg={3} key={el.id}>
-                <Card variant="outlined">
-                  <CardActionArea>
-                    <CardMedia
-                      className={classes.card__image}
-                      image={el.image}
-                      title={el.name}
-                    />
-                    <CardContent>
-                      <Typography variant="h5" component="h2">
-                        {el.name}
-                      </Typography>
-                    </CardContent>
-                  </CardActionArea>
-                </Card>
-              </Grid>
-            ))}
-        </Grid>
+        {isLoading ? (
+          <Loader />
+        ) : (
+          <>
+            <Grid container spacing={2}>
+              {characters &&
+                characters.map((el) => (
+                  <Grid item xs={12} sm={4} lg={3} key={el.id}>
+                    <Card variant="outlined">
+                      <CardActionArea>
+                        <CardMedia
+                          className={classes.card__image}
+                          image={el.image}
+                          title={el.name}
+                        />
+                        <CardContent>
+                          <Typography variant="h5" component="h2">
+                            {el.name}
+                          </Typography>
+                        </CardContent>
+                      </CardActionArea>
+                    </Card>
+                  </Grid>
+                ))}
+            </Grid>
+            <Pagination
+              page={queryParams.page ? +queryParams.page : 1}
+              count={data?.info.pages}
+              variant="outlined"
+              className={classes.pagination}
+              renderItem={(item) => (
+                <PaginationItem
+                  component={Link}
+                  to={buildPaginationString(item.page, queryParams)}
+                  {...item}
+                />
+              )}
+            />
+          </>
+        )}
       </Container>
     </main>
   );

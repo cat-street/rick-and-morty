@@ -5,7 +5,6 @@ import {
   Toolbar,
   Typography,
 } from '@material-ui/core';
-import { Link } from 'react-router-dom';
 
 const useStyles = makeStyles({
   link: {
@@ -22,9 +21,9 @@ const Header = () => {
       <Container>
         <Toolbar>
           <Typography variant="h5" component="h1">
-            <Link to="/" className={classes.link}>
+            <a href="/" className={classes.link}>
               <strong>Rick and Morty App</strong>
-            </Link>
+            </a>
           </Typography>
         </Toolbar>
       </Container>

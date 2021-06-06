@@ -1,6 +1,6 @@
-import { Redirect, useHistory } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 import { Button, makeStyles, MenuItem } from '@material-ui/core';
-import { Field, Form, Formik } from 'formik';
+import { Form, Formik } from 'formik';
 
 import { QueryParams } from 'types';
 import { buildQueryString } from 'utils/queryHelpers';
@@ -44,6 +44,7 @@ const Filter = ({ queryParams }: Props) => {
         const query = buildQueryString(values);
         history.push(query);
       }}
+      enableReinitialize
       onReset={reset}
     >
       <Form className={classes.filter}>

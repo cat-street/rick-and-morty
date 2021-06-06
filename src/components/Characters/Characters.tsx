@@ -14,8 +14,10 @@ import {
 import Pagination from '@material-ui/lab/Pagination';
 import PaginationItem from '@material-ui/lab/PaginationItem';
 
-import useReactQuery from 'hooks/useReactQuery';
 import { Character, QueryParams } from 'types';
+import useReactQuery from 'hooks/useReactQuery';
+import { buildPaginationString, buildQueryString } from 'utils/queryHelpers';
+
 import Loader from 'components/Loader/Loader';
 import Filter from 'components/Filter/Filter';
 
@@ -34,38 +36,20 @@ const useStyles = makeStyles({
   },
 });
 
-const querySettings = ['page', 'name', 'status', 'species', 'gender'];
-
-function buildQueryString(queryParams: QueryParams) {
-  const queryArr: string[] = [];
-  querySettings.forEach((el) => {
-    if (queryParams[el]) {
-      queryArr.push(`${el}=${queryParams[el]}`);
-    }
-  });
-  return queryArr.length > 0 ? `?${queryArr.join('&')}` : '';
-}
-
-function buildPaginationString(page: number, queryParams: QueryParams) {
-  return page === 1
-    ? buildQueryString({ ...queryParams, page: null })
-    : buildQueryString({ ...queryParams, page });
-}
-
 const Characters = () => {
   const classes = useStyles();
   const { pathname, search } = useLocation();
 
   const query = new URLSearchParams(search);
   const queryParams: QueryParams = {
-    page: null,
-    name: null,
-    status: null,
-    species: null,
-    gender: null,
+    page: '',
+    name: '',
+    species: '',
+    status: 'all',
+    gender: 'all',
   };
-  querySettings.forEach((el) => {
-    queryParams[el] = query.get(el);
+  Object.keys(queryParams).forEach((el) => {
+    queryParams[el] = query.get(el) || '';
   });
   const queryString = buildQueryString(queryParams);
 
@@ -83,7 +67,7 @@ const Characters = () => {
           <Loader />
         ) : (
           <>
-            <Filter />
+            <Filter queryParams={queryParams} />
             <Grid container spacing={2}>
               {characters &&
                 characters.map((el) => (

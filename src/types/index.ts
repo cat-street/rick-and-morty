@@ -52,10 +52,10 @@ export interface ResponseData {
 }
 
 export interface QueryParams {
-  [key: string]: string | number | null;
-  page: string | number | null;
-  name: string | null;
-  status: 'alive' | 'dead' | 'unknown' | null;
-  species: string | null;
-  gender: 'female' | 'male' | 'genderless' | 'unknown' | null;
+  [key: string]: string | number | undefined;
+  page?: string | number;
+  name: string;
+  species: string;
+  status: 'all' | 'alive' | 'dead' | 'unknown';
+  gender: 'all' | 'female' | 'male' | 'genderless' | 'unknown';
 }

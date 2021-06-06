@@ -1,9 +1,9 @@
 import { makeStyles, TextField } from '@material-ui/core';
 import { FieldHookConfig, useField } from 'formik';
 
-type Props = {
+interface Props {
   label: string;
-};
+}
 
 const useStyles = makeStyles({
   textField: {

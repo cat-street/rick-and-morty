@@ -1,14 +1,16 @@
-import {
-  Button,
-  FormControl,
-  InputLabel,
-  makeStyles,
-  MenuItem,
-  Select,
-} from '@material-ui/core';
+import { Redirect, useHistory } from 'react-router-dom';
+import { Button, makeStyles, MenuItem } from '@material-ui/core';
+import { Field, Form, Formik } from 'formik';
+
+import { QueryParams } from 'types';
+import { buildQueryString } from 'utils/queryHelpers';
+
 import FormSelect from 'components/FormSelect/FormSelect';
 import TextInput from 'components/TextInput/TextInput';
-import { Form, Formik } from 'formik';
+
+interface Props {
+  queryParams: QueryParams;
+}
 
 const useStyles = makeStyles({
   filter: {
@@ -27,18 +29,22 @@ const useStyles = makeStyles({
   },
 });
 
-const Filter = () => {
+const Filter = ({ queryParams }: Props) => {
   const classes = useStyles();
+  const history = useHistory();
+
+  const reset = () => {
+    history.push('/');
+  };
 
   return (
     <Formik
-      initialValues={{
-        name: '',
-        species: '',
-        gender: 'all',
-        status: 'all',
+      initialValues={{ ...queryParams, page: '' }}
+      onSubmit={(values) => {
+        const query = buildQueryString(values);
+        history.push(query);
       }}
-      onSubmit={(values) => console.log(values)}
+      onReset={reset}
     >
       <Form className={classes.filter}>
         <TextInput label="Name" name="name" />
@@ -64,6 +70,15 @@ const Filter = () => {
           color="secondary"
         >
           Submit
+        </Button>
+        <Button
+          className={classes.submit}
+          size="small"
+          type="reset"
+          variant="outlined"
+          color="secondary"
+        >
+          Reset
         </Button>
       </Form>
     </Formik>

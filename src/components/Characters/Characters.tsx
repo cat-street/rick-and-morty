@@ -17,10 +17,11 @@ import PaginationItem from '@material-ui/lab/PaginationItem';
 import useReactQuery from 'hooks/useReactQuery';
 import { Character, QueryParams } from 'types';
 import Loader from 'components/Loader/Loader';
+import Filter from 'components/Filter/Filter';
 
 const useStyles = makeStyles({
   main: {
-    padding: '30px 0',
+    padding: '20px 0 30px',
   },
   card__image: {
     height: '300px',
@@ -82,6 +83,7 @@ const Characters = () => {
           <Loader />
         ) : (
           <>
+            <Filter />
             <Grid container spacing={2}>
               {characters &&
                 characters.map((el) => (

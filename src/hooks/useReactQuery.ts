@@ -1,13 +1,13 @@
 import axios from 'axios';
-import { useQuery } from 'react-query';
+import { useQuery, UseQueryResult } from 'react-query';
 
-import { ResponseData } from 'types';
+import { Character, ResponseData } from 'types';
 
 const getData = async ({
   queryKey,
 }: {
   queryKey: any;
-}): Promise<ResponseData> => {
+}): Promise<ResponseData | Character> => {
   const [, { type, query }]: [string, { type: string, query: string }] = queryKey;
   const response = await axios.get(
     `https://rickandmortyapi.com/api/${type}/${query}`,
@@ -15,8 +15,11 @@ const getData = async ({
   return response.data;
 };
 
-export default function useReactQuery(type: string, query: string) {
-  return useQuery<ResponseData, Error>(
+export default function useReactQuery<Type>(
+  type: string,
+  query: string,
+): UseQueryResult<Type, Error> {
+  return useQuery(
     ['query', { type, query }],
     getData,
   );

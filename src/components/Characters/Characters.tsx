@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import { useLocation, Link } from 'react-router-dom';
+import { useLocation, Link, useHistory } from 'react-router-dom';
 
 import {
   Card,
@@ -14,7 +14,7 @@ import {
 import Pagination from '@material-ui/lab/Pagination';
 import PaginationItem from '@material-ui/lab/PaginationItem';
 
-import { Character, QueryParams } from 'types';
+import { QueryParams, ResponseData } from 'types';
 import useReactQuery from 'hooks/useReactQuery';
 import { buildPaginationString, buildQueryString } from 'utils/queryHelpers';
 
@@ -40,6 +40,7 @@ const useStyles = makeStyles({
 const Characters = () => {
   const classes = useStyles();
   const { pathname, search } = useLocation();
+  const history = useHistory();
 
   const query = new URLSearchParams(search);
   const queryParams: QueryParams = {
@@ -53,65 +54,66 @@ const Characters = () => {
     queryParams[el] = query.get(el) || '';
   });
   const queryString = buildQueryString(queryParams);
+  const { isLoading, data } = useReactQuery<ResponseData>('character', queryString);
+  const characters = data?.results;
 
-  const { isLoading, data } = useReactQuery('character', queryString);
-  const characters = data?.results as Character[];
+  const handleCardClick = (id: number) => {
+    history.push(`/character/${id}`);
+  };
 
   useEffect(() => {
     window.scrollTo(0, 0);
   }, [pathname]);
 
   return (
-    <main className={classes.main}>
-      <Container>
-        {isLoading ? (
-          <Loader />
-        ) : (
-          <>
-            <Filter queryParams={queryParams} />
-            {!characters ? (
-              <NoResults />
-            ) : (
-              <>
-                <Grid container spacing={2}>
-                  {characters.map((el) => (
-                    <Grid item xs={12} sm={4} lg={3} key={el.id}>
-                      <Card variant="outlined">
-                        <CardActionArea>
-                          <CardMedia
-                            className={classes.card__image}
-                            image={el.image}
-                            title={el.name}
-                          />
-                          <CardContent>
-                            <Typography variant="h5" component="h2">
-                              {el.name}
-                            </Typography>
-                          </CardContent>
-                        </CardActionArea>
-                      </Card>
-                    </Grid>
-                  ))}
-                </Grid>
-                <Pagination
-                  page={queryParams.page ? +queryParams.page : 1}
-                  count={data?.info.pages}
-                  variant="outlined"
-                  className={classes.pagination}
-                  renderItem={(item) => (
-                    <PaginationItem
-                      component={Link}
-                      to={buildPaginationString(item.page, queryParams)}
-                      {...item}
-                    />
-                  )}
-                />
-              </>
-            )}
-          </>
-        )}
-      </Container>
-    </main>
+    <Container>
+      {isLoading ? (
+        <Loader />
+      ) : (
+        <>
+          <Filter queryParams={queryParams} />
+          {!characters ? (
+            <NoResults />
+          ) : (
+            <>
+              <Grid container spacing={2}>
+                {characters.map((el) => (
+                  <Grid item xs={12} sm={4} lg={3} key={el.id}>
+                    <Card variant="outlined">
+                      <CardActionArea onClick={() => handleCardClick(el.id)}>
+                        <CardMedia
+                          className={classes.card__image}
+                          image={el.image}
+                          title={el.name}
+                        />
+                        <CardContent>
+                          <Typography variant="h5" component="h2">
+                            {el.name}
+                          </Typography>
+                        </CardContent>
+                      </CardActionArea>
+                    </Card>
+                  </Grid>
+                ))}
+              </Grid>
+              <Pagination
+                page={queryParams.page ? +queryParams.page : 1}
+                count={data?.info.pages}
+                variant="outlined"
+                className={classes.pagination}
+                renderItem={(item) => (
+                  <PaginationItem
+                    component={Link}
+                    to={buildPaginationString(item.page, queryParams)}
+                    {...item}
+                  />
+                )}
+              />
+            </>
+          )}
+        </>
+      )}
+    </Container>
   );
 };
 

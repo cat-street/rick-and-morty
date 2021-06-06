@@ -48,7 +48,7 @@ export interface Episode {
 
 export interface ResponseData {
   info: Info;
-  results: Character[] | Location[] | Episode[];
+  results: Character[];
 }
 
 export interface QueryParams {

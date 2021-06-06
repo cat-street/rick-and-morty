@@ -1,11 +1,14 @@
 import {
+  Button,
   FormControl,
   InputLabel,
   makeStyles,
   MenuItem,
   Select,
-  TextField,
 } from '@material-ui/core';
+import FormSelect from 'components/FormSelect/FormSelect';
+import TextInput from 'components/TextInput/TextInput';
+import { Form, Formik } from 'formik';
 
 const useStyles = makeStyles({
   filter: {
@@ -13,61 +16,57 @@ const useStyles = makeStyles({
     display: 'flex',
     flexWrap: 'wrap',
     gap: '20px',
-  },
-  textField: {
-    minWidth: '25ch',
-    flex: '1 0',
+    justifyContent: 'center',
   },
   formControl: {
     minWidth: '25ch',
     flex: '1 0',
   },
+  submit: {
+    minWidth: '20ch',
+  },
 });
 
 const Filter = () => {
   const classes = useStyles();
+
   return (
-    <div className={classes.filter}>
-      <TextField
-        label="Name"
-        className={classes.textField}
-        size="small"
-        color="secondary"
-      />
-      <TextField
-        label="Species"
-        className={classes.textField}
-        size="small"
-        color="secondary"
-      />
-      <FormControl
-        className={classes.formControl}
-        size="small"
-        color="secondary"
-      >
-        <InputLabel id="gender">Gender</InputLabel>
-        <Select labelId="gender" id="gender" defaultValue="all">
+    <Formik
+      initialValues={{
+        name: '',
+        species: '',
+        gender: 'all',
+        status: 'all',
+      }}
+      onSubmit={(values) => console.log(values)}
+    >
+      <Form className={classes.filter}>
+        <TextInput label="Name" name="name" />
+        <TextInput label="Species" name="species" />
+        <FormSelect label="Gender" name="gender" defaultValue="all">
           <MenuItem value="all">all</MenuItem>
           <MenuItem value="male">male</MenuItem>
           <MenuItem value="female">female</MenuItem>
           <MenuItem value="genderless">genderless</MenuItem>
           <MenuItem value="unknown">unknown</MenuItem>
-        </Select>
-      </FormControl>
-      <FormControl
-        className={classes.formControl}
-        size="small"
-        color="secondary"
-      >
-        <InputLabel id="status">Status</InputLabel>
-        <Select labelId="status" id="status" defaultValue="all">
+        </FormSelect>
+        <FormSelect label="Status" name="status" defaultValue="all">
           <MenuItem value="all">all</MenuItem>
           <MenuItem value="alive">alive</MenuItem>
           <MenuItem value="dead">dead</MenuItem>
           <MenuItem value="unknown">unknown</MenuItem>
-        </Select>
-      </FormControl>
-    </div>
+        </FormSelect>
+        <Button
+          className={classes.submit}
+          size="small"
+          type="submit"
+          variant="contained"
+          color="secondary"
+        >
+          Submit
+        </Button>
+      </Form>
+    </Formik>
   );
 };
 

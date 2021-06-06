@@ -3,8 +3,12 @@ import { useQuery } from 'react-query';
 
 import { ResponseData } from 'types';
 
-const getData = async ({ queryKey }: any): Promise<ResponseData> => {
-  const [, { type, query }] = queryKey;
+const getData = async ({
+  queryKey,
+}: {
+  queryKey: any;
+}): Promise<ResponseData> => {
+  const [, { type, query }]: [string, { type: string, query: string }] = queryKey;
   const { data } = await axios.get(
     `https://rickandmortyapi.com/api/${type}/${query}`,
   );

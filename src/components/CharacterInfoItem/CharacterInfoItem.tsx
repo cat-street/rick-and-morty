@@ -1,18 +1,39 @@
-import { ListItem, ListItemIcon, ListItemText, SvgIconTypeMap } from '@material-ui/core';
+import {
+  ListItem,
+  ListItemIcon,
+  ListItemText,
+  makeStyles,
+  SvgIconTypeMap,
+} from '@material-ui/core';
 import { OverridableComponent } from '@material-ui/core/OverridableComponent';
+import { ReactNode } from 'react';
 
 interface Props {
-  text: string;
-  icon: OverridableComponent<SvgIconTypeMap<Record<string, unknown>, 'svg'>>
+  title: string;
+  children: ReactNode;
+  icon: OverridableComponent<SvgIconTypeMap<Record<string, unknown>, 'svg'>>;
 }
 
-const CharacterInfoItem = ({ text, icon: Icon }: Props) => (
-  <ListItem>
-    <ListItemIcon>
-      <Icon color="secondary" />
-    </ListItemIcon>
-    <ListItemText primary={text} />
-  </ListItem>
-);
+const useStyles = makeStyles({
+  card__item: {
+    color: '#000',
+  },
+});
+
+const CharacterInfoItem = ({ title, children, icon: Icon }: Props) => {
+  const classes = useStyles();
+
+  return (
+    <ListItem className={classes.card__item}>
+      <ListItemIcon>
+        <Icon color="secondary" />
+      </ListItemIcon>
+      <ListItemText>
+        <strong>{`${title}: `}</strong>
+        {children}
+      </ListItemText>
+    </ListItem>
+  );
+};
 
 export default CharacterInfoItem;

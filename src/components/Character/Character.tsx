@@ -1,9 +1,12 @@
-import { Link, useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import {
   Card,
   CardMedia,
   Container,
+  Link,
   List,
+  ListItem,
+  ListItemText,
   makeStyles,
   Typography,
 } from '@material-ui/core';
@@ -62,7 +65,7 @@ const CharacterPage = () => {
 
           <div className={classes.card__text}>
             <Typography
-              variant="h3"
+              variant="h4"
               component="h2"
               className={classes.card__header}
             >
@@ -70,20 +73,56 @@ const CharacterPage = () => {
             </Typography>
 
             <List>
-              <CharacterInfoItem text={`Gender: ${data.gender}`} icon={Face} />
-              <CharacterInfoItem text={`Status: ${data.status}`} icon={InsertEmoticon} />
-              <CharacterInfoItem text={`Species: ${data.species}`} icon={Android} />
-              {data.type && <CharacterInfoItem text={`Type: ${data.type}`} icon={BugReport} />}
-              {data.origin.url ? (
-                <Link to={`/location/${data.origin.url.replace(/.*\//, '')}`}>
-                  <CharacterInfoItem text={`Origin: ${data.origin.name}`} icon={Language} />
-                </Link>
-              ) : (
-                <CharacterInfoItem text={`Origin: ${data.origin.name}`} icon={Language} />
+              <CharacterInfoItem title="Gender" icon={Face}>
+                {data.gender}
+              </CharacterInfoItem>
+              <CharacterInfoItem title="Status" icon={InsertEmoticon}>
+                {data.status}
+              </CharacterInfoItem>
+              <CharacterInfoItem title="Species" icon={Android}>
+                {data.species}
+              </CharacterInfoItem>
+              {data.type && (
+                <CharacterInfoItem title="Type" icon={BugReport}>
+                  {data.type}
+                </CharacterInfoItem>
               )}
-              <CharacterInfoItem text={`Location: ${data.location.name}`} icon={LocationOn} />
+
+              <CharacterInfoItem title="Origin" icon={Language}>
+                {data.origin.url ? (
+                  <Link
+                    href={`/location/${data.origin.url.replace(/.*\//, '')}`}
+                  >
+                    {data.origin.name}
+                  </Link>
+                ) : (
+                  data.origin.name
+                )}
+              </CharacterInfoItem>
+
+              <CharacterInfoItem title="Location" icon={LocationOn}>
+                {data.location.url ? (
+                  <Link
+                    href={`/location/${data.location.url.replace(/.*\//, '')}`}
+                  >
+                    {data.location.name}
+                  </Link>
+                ) : (
+                  data.location.name
+                )}
+              </CharacterInfoItem>
             </List>
           </div>
+
+          <CharacterInfoItem title="Episodes" icon={Language}>
+            {data.episode.map((el) => (
+              <Link
+                href={`/episode/${el.replace(/.*\//, '')}`}
+              >
+                {`${el.replace(/.*\//, '')}`}
+              </Link>
+            ))}
+          </CharacterInfoItem>
         </Card>
       )}
     </Container>

@@ -10,6 +10,7 @@ const useStyles = makeStyles({
   card__list: {
     display: 'flex',
     flexWrap: 'wrap',
+    justifyContent: 'center',
     gap: '5px',
   },
   'card__list-item': {
@@ -17,10 +18,14 @@ const useStyles = makeStyles({
     padding: 0,
   },
   card__avatar: {
-    width: '75px',
-    height: '75px',
+    width: '64px',
+    height: '64px',
     '&:hover': {
       backgroundColor: '#f50057',
+    },
+    '@media (min-width:425px)': {
+      width: '88px',
+      height: '88px',
     },
   },
 });

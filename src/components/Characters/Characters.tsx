@@ -39,7 +39,7 @@ const useStyles = makeStyles({
 
 const Characters = () => {
   const classes = useStyles();
-  const { pathname, search } = useLocation();
+  const { search } = useLocation();
   const history = useHistory();
 
   const query = new URLSearchParams(search);
@@ -63,7 +63,7 @@ const Characters = () => {
 
   useEffect(() => {
     window.scrollTo(0, 0);
-  }, [pathname]);
+  }, [search]);
 
   return (
     <Container>

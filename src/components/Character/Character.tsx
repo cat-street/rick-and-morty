@@ -44,15 +44,6 @@ const useStyles = makeStyles({
   card__text: {
     flex: 1,
   },
-  card__episodes: {
-    display: 'flex',
-    flexWrap: 'wrap',
-    gap: '5px',
-  },
-  card__episode: {
-    flex: 0,
-    padding: 0,
-  },
 });
 
 const CharacterPage = () => {

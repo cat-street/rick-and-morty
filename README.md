@@ -5,7 +5,7 @@
 
 A sample application dedicated to Rick and Morty animated TV series.
 
-* Current live version at [https://cat-street.github.io/rick-and-morty](https://cat-street.github.io/rick-and-morty)
+* Current live version at [https://thirsty-allen-60674b.netlify.app](https://thirsty-allen-60674b.netlify.app)
 
 ---
 

@@ -31,6 +31,7 @@ const CharactersList = ({ itemsArr }: Props) => {
     red.push(el.replace(/.*\//, ''));
     return red;
   }, []);
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const results: Record<string, any>[] = useMultipleQueries(
     'character',
     listIDs,

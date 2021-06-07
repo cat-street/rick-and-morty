@@ -20,6 +20,12 @@ const useStyles = makeStyles({
     gap: '20px',
     justifyContent: 'center',
   },
+  filter__buttons: {
+    display: 'flex',
+    flexWrap: 'wrap',
+    gap: '10px',
+    justifyContent: 'center',
+  },
   formControl: {
     minWidth: '25ch',
     flex: '1 0',
@@ -63,24 +69,26 @@ const Filter = ({ queryParams }: Props) => {
           <MenuItem value="dead">dead</MenuItem>
           <MenuItem value="unknown">unknown</MenuItem>
         </FormSelect>
-        <Button
-          className={classes.submit}
-          size="small"
-          type="submit"
-          variant="contained"
-          color="secondary"
-        >
-          Submit
-        </Button>
-        <Button
-          className={classes.submit}
-          size="small"
-          type="reset"
-          variant="outlined"
-          color="secondary"
-        >
-          Reset
-        </Button>
+        <div className={classes.filter__buttons}>
+          <Button
+            className={classes.submit}
+            size="small"
+            type="submit"
+            variant="contained"
+            color="secondary"
+          >
+            Submit
+          </Button>
+          <Button
+            className={classes.submit}
+            size="small"
+            type="reset"
+            variant="outlined"
+            color="secondary"
+          >
+            Reset
+          </Button>
+        </div>
       </Form>
     </Formik>
   );

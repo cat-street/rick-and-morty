@@ -5,8 +5,6 @@ import {
   Container,
   Link,
   List,
-  ListItem,
-  ListItemText,
   makeStyles,
   Typography,
 } from '@material-ui/core';
@@ -17,6 +15,7 @@ import {
   InsertEmoticon,
   Language,
   LocationOn,
+  Movie,
 } from '@material-ui/icons';
 
 import useReactQuery from 'hooks/useReactQuery';
@@ -24,6 +23,7 @@ import { Character } from 'types';
 
 import Loader from 'components/Loader/Loader';
 import CharacterInfoItem from 'components/CharacterInfoItem/CharacterInfoItem';
+import CharacterEpisodes from 'components/CharacterEpisodes/CharacterEpisodes';
 
 const useStyles = makeStyles({
   card: {
@@ -43,6 +43,15 @@ const useStyles = makeStyles({
   },
   card__text: {
     flex: 1,
+  },
+  card__episodes: {
+    display: 'flex',
+    flexWrap: 'wrap',
+    gap: '5px',
+  },
+  card__episode: {
+    flex: 0,
+    padding: 0,
   },
 });
 
@@ -114,14 +123,8 @@ const CharacterPage = () => {
             </List>
           </div>
 
-          <CharacterInfoItem title="Episodes" icon={Language}>
-            {data.episode.map((el) => (
-              <Link
-                href={`/episode/${el.replace(/.*\//, '')}`}
-              >
-                {`${el.replace(/.*\//, '')}`}
-              </Link>
-            ))}
+          <CharacterInfoItem title="Episodes" icon={Movie}>
+            <CharacterEpisodes episodes={data.episode} />
           </CharacterInfoItem>
         </Card>
       )}

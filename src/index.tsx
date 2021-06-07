@@ -12,7 +12,7 @@ const queryClient = new QueryClient();
 ReactDOM.render(
   <React.StrictMode>
     <CssBaseline />
-    <BrowserRouter>
+    <BrowserRouter basename={process.env.PUBLIC_URL}>
       <QueryClientProvider client={queryClient}>
         <App />
       </QueryClientProvider>

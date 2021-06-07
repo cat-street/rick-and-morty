@@ -11,7 +11,7 @@ import { ReactNode } from 'react';
 interface Props {
   title: string;
   children: ReactNode;
-  icon: OverridableComponent<SvgIconTypeMap<Record<string, unknown>, 'svg'>>;
+  icon?: OverridableComponent<SvgIconTypeMap<Record<string, unknown>, 'svg'>>;
 }
 
 const useStyles = makeStyles({
@@ -20,14 +20,16 @@ const useStyles = makeStyles({
   },
 });
 
-const CharacterInfoItem = ({ title, children, icon: Icon }: Props) => {
+const InfoItem = ({ title, children, icon: Icon }: Props) => {
   const classes = useStyles();
 
   return (
     <ListItem className={classes.card__item}>
-      <ListItemIcon>
-        <Icon color="secondary" />
-      </ListItemIcon>
+      {Icon && (
+        <ListItemIcon>
+          <Icon color="secondary" />
+        </ListItemIcon>
+      )}
       <ListItemText>
         <strong>{`${title}: `}</strong>
         {children}
@@ -36,4 +38,8 @@ const CharacterInfoItem = ({ title, children, icon: Icon }: Props) => {
   );
 };
 
-export default CharacterInfoItem;
+InfoItem.defaultProps = {
+  icon: null,
+};
+
+export default InfoItem;

@@ -5,12 +5,12 @@ interface Props {
 }
 
 const useStyles = makeStyles({
-  card__episodes: {
+  card__list: {
     display: 'flex',
     flexWrap: 'wrap',
     gap: '5px',
   },
-  card__episode: {
+  'card__list-item': {
     flex: 0,
     padding: 0,
   },
@@ -21,13 +21,13 @@ const useStyles = makeStyles({
   },
 });
 
-const CharacterEpisodes = ({ episodes }: Props) => {
+const EpisodesList = ({ episodes }: Props) => {
   const classes = useStyles();
 
   return (
-    <List className={classes.card__episodes}>
+    <List className={classes.card__list}>
       {episodes.map((el) => (
-        <ListItem className={classes.card__episode}>
+        <ListItem className={classes['card__list-item']} key={el}>
           <Link href={`/episode/${el.replace(/.*\//, '')}`} underline="none">
             <Avatar className={classes.card__avatar}>{`${el.replace(/.*\//, '')}`}</Avatar>
           </Link>
@@ -37,4 +37,4 @@ const CharacterEpisodes = ({ episodes }: Props) => {
   );
 };
 
-export default CharacterEpisodes;
+export default EpisodesList;

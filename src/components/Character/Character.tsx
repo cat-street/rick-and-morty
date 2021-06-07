@@ -22,8 +22,8 @@ import useReactQuery from 'hooks/useReactQuery';
 import { Character } from 'types';
 
 import Loader from 'components/Loader/Loader';
-import CharacterInfoItem from 'components/CharacterInfoItem/CharacterInfoItem';
-import CharacterEpisodes from 'components/CharacterEpisodes/CharacterEpisodes';
+import InfoItem from 'components/InfoItem/InfoItem';
+import EpisodesList from 'components/EpisodesList/EpisodesList';
 
 const useStyles = makeStyles({
   card: {
@@ -73,22 +73,22 @@ const CharacterPage = () => {
             </Typography>
 
             <List>
-              <CharacterInfoItem title="Gender" icon={Face}>
+              <InfoItem title="Gender" icon={Face}>
                 {data.gender}
-              </CharacterInfoItem>
-              <CharacterInfoItem title="Status" icon={InsertEmoticon}>
+              </InfoItem>
+              <InfoItem title="Status" icon={InsertEmoticon}>
                 {data.status}
-              </CharacterInfoItem>
-              <CharacterInfoItem title="Species" icon={Android}>
+              </InfoItem>
+              <InfoItem title="Species" icon={Android}>
                 {data.species}
-              </CharacterInfoItem>
+              </InfoItem>
               {data.type && (
-                <CharacterInfoItem title="Type" icon={BugReport}>
+                <InfoItem title="Type" icon={BugReport}>
                   {data.type}
-                </CharacterInfoItem>
+                </InfoItem>
               )}
 
-              <CharacterInfoItem title="Origin" icon={Language}>
+              <InfoItem title="Origin" icon={Language}>
                 {data.origin.url ? (
                   <Link
                     href={`/location/${data.origin.url.replace(/.*\//, '')}`}
@@ -98,9 +98,9 @@ const CharacterPage = () => {
                 ) : (
                   data.origin.name
                 )}
-              </CharacterInfoItem>
+              </InfoItem>
 
-              <CharacterInfoItem title="Location" icon={LocationOn}>
+              <InfoItem title="Location" icon={LocationOn}>
                 {data.location.url ? (
                   <Link
                     href={`/location/${data.location.url.replace(/.*\//, '')}`}
@@ -110,13 +110,13 @@ const CharacterPage = () => {
                 ) : (
                   data.location.name
                 )}
-              </CharacterInfoItem>
+              </InfoItem>
             </List>
           </div>
 
-          <CharacterInfoItem title="Episodes" icon={Movie}>
-            <CharacterEpisodes episodes={data.episode} />
-          </CharacterInfoItem>
+          <InfoItem title="Episodes" icon={Movie}>
+            <EpisodesList episodes={data.episode} />
+          </InfoItem>
         </Card>
       )}
     </Container>
